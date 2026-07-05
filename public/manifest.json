@@ -1,8 +1,6 @@
 {
   "short_name": "Zenris",
-  "name": "Create React App Sample",
-
-  
+  "name": "Zenris",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
