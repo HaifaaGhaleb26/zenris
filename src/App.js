@@ -15,6 +15,12 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
 
+  const normalizeStatus = (status) => String(status ?? 'todo').trim().toLowerCase();
+  const normalizeTask = (task) => ({
+    ...task,
+    status: normalizeStatus(task.status),
+  });
+
   // 1. مراقبة الجلسة وتحديثها عند تسجيل الدخول / الخروج
   useEffect(() => {
     async function loadSession() {
@@ -78,7 +84,7 @@ function App() {
 
         if (isMounted) {
           setProjects(!projErr && projs ? projs : []);
-          setTasks(!tskErr && tsk ? tsk : []);
+          setTasks(!tskErr && tsk ? tsk.map(normalizeTask) : []);
         }
       } catch (err) {
         console.error('❌ Error fetching Zenris data:', err);
@@ -111,10 +117,16 @@ function App() {
           user_id: session.user.id,
         },
       ])
-      .select();
+      .select('*');
 
-    if (!error && data?.length) {
-      setTasks((prev) => [data[0], ...prev]);
+    if (error) {
+      console.error('Task insert failed:', error);
+      return;
+    }
+
+    if (data?.length) {
+      const createdTask = normalizeTask(data[0]);
+      setTasks((prev) => [createdTask, ...prev]);
     }
   };
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import TaskBoard from '../components/TaskBoard';
 
 function Dashboard({ projects, tasks, onAddTask, onUpdateTaskStatus, onDeleteTask }) {
   const [taskTitle, setTaskTitle] = useState('');
@@ -81,8 +80,6 @@ function Dashboard({ projects, tasks, onAddTask, onUpdateTaskStatus, onDeleteTas
           </button>
         </form>
       </div>
-
-      <TaskBoard tasks={tasks} onUpdateTaskStatus={onUpdateTaskStatus} />
 
       <div className="dashboard-board">
         <div className="dashboard-column dashboard-column--todo">

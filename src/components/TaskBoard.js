@@ -1,11 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-
-const initialTasks = [
-  { id: 'task-1', title: 'Design Initial Wireframes', status: 'todo' },
-  { id: 'task-2', title: 'Code Reusable Components', status: 'in_progress' },
-  { id: 'task-3', title: 'Connect Database to Supabase', status: 'done' },
-];
 
 const columns = {
   todo: { title: 'To Do', id: 'todo' },
@@ -13,31 +7,19 @@ const columns = {
   done: { title: 'Done', id: 'done' },
 };
 
-function TaskBoard({ tasks: propTasks, onUpdateTaskStatus }) {
-  const [localTasks, setLocalTasks] = useState(initialTasks);
+function TaskBoard({ tasks: propTasks = [], onUpdateTaskStatus }) {
+  const tasks = Array.isArray(propTasks) ? propTasks : [];
 
-  const tasks = Array.isArray(propTasks) && propTasks.length ? propTasks : localTasks;
+  const normalizedStatus = (task) => String(task.status ?? '').trim().toLowerCase();
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
     if (!destination) return;
     if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-    // If parent provided an update handler, use it (keeps global state in sync)
     if (typeof onUpdateTaskStatus === 'function') {
       onUpdateTaskStatus(draggableId, destination.droppableId);
-      return;
     }
-
-    // Fallback to local state update
-    const updatedTasks = tasks.map((task) => {
-      if (String(task.id) === String(draggableId)) {
-        return { ...task, status: destination.droppableId };
-      }
-      return task;
-    });
-
-    setLocalTasks(updatedTasks);
   };
 
   return (
@@ -46,7 +28,7 @@ function TaskBoard({ tasks: propTasks, onUpdateTaskStatus }) {
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="board-container">
           {Object.values(columns).map((column) => {
-            const columnTasks = tasks.filter((task) => task.status === column.id);
+            const columnTasks = tasks.filter((task) => normalizedStatus(task) === column.id);
 
             return (
               <div key={column.id} className="board-column">
@@ -63,7 +45,7 @@ function TaskBoard({ tasks: propTasks, onUpdateTaskStatus }) {
                               {...provided.dragHandleProps}
                               className="task-item"
                             >
-                              {task.title}
+                              {task.title || task.name || 'Untitled Task'}
                             </div>
                           )}
                         </Draggable>

@@ -1,19 +1,19 @@
 /* --- Global theme variables --- */
 :root {
-  --bg-dark: #1e1e2f;
-  --panel-bg: #151a33;
-  
-  --form-bg: #1b2034;
-  --surface: #29304f;
-  --text-main: #f8fafc;
-  --text-muted: #a3aed0;
-  --text-soft: #cbd5e1;
-  --primary-color: #6d77ff;
-  --primary-hover: #5b65ee;
-  --secondary-color: #22c55e;
-  --danger-color: #ef4444;
-  --border-color: #333c60;
-  --shadow: 0 24px 60px rgba(10, 15, 40, 0.42);
+  --bg-dark: #eef2ff;
+  --panel-bg: #f6efff;
+  /* --card-bg: rgba(255, 255, 255, 0.96); */
+  --form-bg: rgba(255, 255, 255, 0.85);
+  --surface: #eef1ff;
+  --text-main: #1f2937;
+  --text-muted: #475569;
+  --text-soft: #64748b;
+  --primary-color: #5b7efa;
+  --primary-hover: #4f46e5;
+  --secondary-color: #c084fc;
+  --danger-color: #f472b6;
+  --border-color: #dbeafe;
+  --shadow: 0 24px 60px rgba(99, 102, 241, 0.18);
 }
 
 /* --- Base reset --- */
@@ -57,7 +57,7 @@ button {
   justify-content: center;
   align-items: center;
   padding: 0;
-  background: linear-gradient(180deg, #152351 0%, #0b1537 100%);
+  background: linear-gradient(180deg, #eef2ff 0%, #f7e6ff 100%);
   width: 100%;
 }
 
@@ -96,10 +96,10 @@ button {
   max-width: 520px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
-  background-color: rgba(15, 26, 76, 0.9);
+  background-color: var(--form-bg);
   border-radius: 24px;
-  border: 1px solid rgba(109, 119, 255, 0.22);
-  box-shadow: 0 30px 80px rgba(7, 12, 40, 0.45);
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  box-shadow: 0 30px 80px rgba(99, 102, 241, 0.12);
 }
 
 .auth-title {
@@ -278,14 +278,14 @@ button.settings-logout-button:hover {
   width: 260px;
   background-color: var(--panel-bg);
   padding: 2rem 1.5rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  border-right: 1px solid rgba(147, 197, 253, 0.3);
 }
 
 .sidebar h2 {
   margin: 0;
   font-size: 1.75rem;
   letter-spacing: 0.04em;
-  color: var(--primary-color);
+  color: #4338ca;
 }
 
 .sidebar-menu {
@@ -300,13 +300,13 @@ button.settings-logout-button:hover {
   display: block;
   padding: 0.95rem 1rem;
   border-radius: 16px;
-  color: var(--text-soft);
+  color: var(--text-muted);
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar-item:hover,
 .sidebar-item.active-link {
-  background-color: rgba(109, 119, 255, 0.15);
+  background-color: rgba(147, 197, 253, 0.18);
   color: var(--text-main);
 }
 
@@ -360,6 +360,7 @@ button.settings-logout-button:hover {
 .task-board {
   border-radius: 22px;
   padding: 1.75rem;
+  background-color: var(--card-bg);
 }
 
 .dashboard-overview-text,
@@ -376,7 +377,7 @@ button.settings-logout-button:hover {
 }
 
 .dashboard-stat {
-  background-color: #1b2034;
+  background-color: #eef2ff;
   border-radius: 18px;
   padding: 1rem;
   display: flex;
@@ -413,28 +414,28 @@ button.settings-logout-button:hover {
 }
 
 .dashboard-column--todo {
-  border-top: 4px solid #facc15;
+  border-top: 4px solid #f9a8d4;
 }
 
 .dashboard-column--in-progress {
-  border-top: 4px solid #2563eb;
+  border-top: 4px solid #93c5fd;
 }
 
 .dashboard-column--done {
-  border-top: 4px solid #16a34a;
+  border-top: 4px solid #86efac;
 }
 
 .task-card {
-  background-color: #151b33;
+  background-color: rgba(255, 255, 255, 0.92);
   border-radius: 18px;
   padding: 1rem;
-  box-shadow: 0 12px 28px rgba(8, 12, 30, 0.18);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.08);
 }
 
 .task-title {
   margin: 0 0 0.65rem;
   font-size: 1rem;
-  color: #f8fafc;
+  color: var(--text-main);
 }
 
 .task-project-badge {
@@ -465,23 +466,23 @@ button.settings-logout-button:hover {
 }
 
 .task-action-button {
-  background-color: rgba(109, 119, 255, 0.08);
+  background-color: rgba(91, 110, 255, 0.12);
   color: var(--primary-color);
-  border-color: rgba(109, 119, 255, 0.2);
+  border-color: rgba(91, 110, 255, 0.18);
 }
 
 .task-action-button:hover {
-  background-color: rgba(109, 119, 255, 0.15);
+  background-color: rgba(91, 110, 255, 0.18);
 }
 
 .task-delete-button {
-  background-color: #1f293f;
+  background-color: rgba(244, 114, 182, 0.12);
   color: var(--danger-color);
-  border-color: rgba(239, 68, 68, 0.24);
+  border-color: rgba(244, 114, 182, 0.24);
 }
 
 .task-delete-button:hover {
-  background-color: rgba(239, 68, 68, 0.12);
+  background-color: rgba(244, 114, 182, 0.2);
 }
 
 .dashboard-add-task-card,
@@ -569,16 +570,16 @@ button.settings-logout-button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(circle at center, rgba(109, 119, 255, 0.16), transparent 35%),
-    linear-gradient(180deg, #14182d 0%, #111427 100%);
+  background: radial-gradient(circle at center, rgba(147, 197, 253, 0.14), transparent 35%),
+    linear-gradient(180deg, #eef2ff 0%, #f7e6ff 100%);
 }
 
 .loading-card {
-  background-color: var(--card-bg);
+  background-color: rgba(255,255,255,0.92);
   border-radius: 24px;
   padding: 2rem 2.5rem;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  box-shadow: var(--shadow);
+  border: 1px solid rgba(203, 213, 225, 0.4);
+  box-shadow: 0 24px 60px rgba(99, 102, 241, 0.12);
   text-align: center;
   color: var(--text-main);
 }
