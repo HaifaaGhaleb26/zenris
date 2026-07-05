@@ -2,33 +2,42 @@ import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 const initialTasks = [
-  { id: 'task-1', content: 'Design Initial Wireframes', status: 'todo' },
-  { id: 'task-2', content: 'Code Reusable Components', status: 'inProgress' },
-  { id: 'task-3', content: 'Connect Database to Supabase', status: 'done' },
+  { id: 'task-1', title: 'Design Initial Wireframes', status: 'todo' },
+  { id: 'task-2', title: 'Code Reusable Components', status: 'in_progress' },
+  { id: 'task-3', title: 'Connect Database to Supabase', status: 'done' },
 ];
 
 const columns = {
   todo: { title: 'To Do', id: 'todo' },
-  inProgress: { title: 'In Progress', id: 'inProgress' },
+  in_progress: { title: 'In Progress', id: 'in_progress' },
   done: { title: 'Done', id: 'done' },
 };
 
-function TaskBoard() {
-  const [tasks, setTasks] = useState(initialTasks);
+function TaskBoard({ tasks: propTasks, onUpdateTaskStatus }) {
+  const [localTasks, setLocalTasks] = useState(initialTasks);
+
+  const tasks = Array.isArray(propTasks) && propTasks.length ? propTasks : localTasks;
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
     if (!destination) return;
     if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
+    // If parent provided an update handler, use it (keeps global state in sync)
+    if (typeof onUpdateTaskStatus === 'function') {
+      onUpdateTaskStatus(draggableId, destination.droppableId);
+      return;
+    }
+
+    // Fallback to local state update
     const updatedTasks = tasks.map((task) => {
-      if (task.id === draggableId) {
+      if (String(task.id) === String(draggableId)) {
         return { ...task, status: destination.droppableId };
       }
       return task;
     });
 
-    setTasks(updatedTasks);
+    setLocalTasks(updatedTasks);
   };
 
   return (
@@ -46,7 +55,7 @@ function TaskBoard() {
                   {(provided) => (
                     <div ref={provided.innerRef} {...provided.droppableProps} className="task-board-dropzone">
                       {columnTasks.map((task, index) => (
-                        <Draggable key={task.id} draggableId={task.id} index={index}>
+                        <Draggable key={String(task.id)} draggableId={String(task.id)} index={index}>
                           {(provided) => (
                             <div
                               ref={provided.innerRef}
@@ -54,7 +63,7 @@ function TaskBoard() {
                               {...provided.dragHandleProps}
                               className="task-item"
                             >
-                              {task.content}
+                              {task.title}
                             </div>
                           )}
                         </Draggable>
