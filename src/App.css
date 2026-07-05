@@ -1,8 +1,8 @@
 /* تعريف الألوان وثيم مشروع Zenris */
 :root {
   --primary-color: #1e1e2f;     /* Zenris Purple */
-  --sidebar-bg: #1e1e2f;        
-  --main-bg: #1e1e2f;           
+  --sidebar-bg: #b4b4d2;        
+  --main-bg: #b4b4d2;           
   --card-bg: #ffffff;           
   --text-light: #ffffff;
   --text-dark: #333333;
