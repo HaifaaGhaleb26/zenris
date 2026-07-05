@@ -2,7 +2,7 @@
 :root {
   --bg-dark: #eef2ff;
   --panel-bg: #f6efff;
-  /* --card-bg: rgba(255, 255, 255, 0.96); */
+   --card-bg: rgba(255, 255, 255, 0.96); 
   --form-bg: rgba(255, 255, 255, 0.85);
   --surface: #eef1ff;
   --text-main: #1f2937;
