@@ -1,132 +1,166 @@
-/* --- الإعدادات العامة والمتغيرات --- */
+/* --- ��������� ������ ���������� --- */
 :root {
-  --bg-dark: #0f172a;
-  --card-bg: #1e293b;
+  --bg-dark: #0b1225;
+  --panel-bg: #111827;
+  --card-bg: #1f2937;
+  --form-bg: #111827;
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --primary-color: #3b82f6;
-  --primary-hover: #2563eb;
+  --text-soft: #d1d5db;
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
   --danger-color: #ef4444;
-  --success-color: #10b981;
+  --success-color: #22c55e;
   --border-color: #334155;
+  --shadow: 0 18px 40px rgba(15, 23, 42, 0.38);
 }
 
 * {
   box-sizing: border-box;
+}
+
+html,
+body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100%;
 }
 
 body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-main);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --- ���� �������� --- */
+.auth-page {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(180deg, #090e1f 0%, #111827 100%);
 }
 
-/* --- حاوية الفورم (Login / Register / Reset) --- */
 .auth-container {
-  background-color: var(--card-bg);
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 420px;
-  border: 1px solid var(--border-color);
-  text-align: center;
+  max-width: 430px;
+  padding: 2.5rem;
+  border-radius: 20px;
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(148, 163, 184, 0.18);
 }
 
 .auth-title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin: 0 0 1.4rem;
+  font-size: 2rem;
+  font-weight: 700;
   color: var(--text-main);
 }
 
-/* --- رسائل الخطأ والنجاح --- */
+.alert-error,
+.alert-success {
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.95rem;
+}
+
 .alert-error {
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: rgba(248, 113, 113, 0.12);
   color: var(--danger-color);
-  padding: 0.75rem;
-  border-radius: 6px;
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  margin-bottom: 1.25rem;
-  font-size: 0.9rem;
+  border: 1px solid rgba(248, 113, 113, 0.2);
 }
 
 .alert-success {
-  background-color: rgba(16, 185, 129, 0.1);
+  background-color: rgba(34, 197, 94, 0.12);
   color: var(--success-color);
-  padding: 0.75rem;
-  border-radius: 6px;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  margin-bottom: 1.25rem;
-  font-size: 0.9rem;
+  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
-/* --- مجموعات المدخلات --- */
 .form-group {
-  margin-bottom: 1.25rem;
-  text-align: left;
+  margin-bottom: 1.2rem;
 }
 
 .form-group label {
   display: block;
-  font-size: 0.9rem;
+  margin-bottom: 0.55rem;
   color: var(--text-muted);
-  margin-bottom: 0.5rem;
+  font-size: 0.92rem;
 }
 
 .form-input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  background-color: var(--bg-dark);
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  background-color: var(--form-bg);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
   color: var(--text-main);
   font-size: 1rem;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-input:focus {
   outline: none;
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
 }
 
-/* --- الأزرار --- */
 .btn-submit {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  border: none;
   background-color: var(--primary-color);
   color: #fff;
-  border: none;
-  border-radius: 6px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-top: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .btn-submit:hover {
   background-color: var(--primary-hover);
+  transform: translateY(-1px);
 }
 
-/* --- الروابط والـ Footer بداخل الكارد --- */
+.btn-submit:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.form-helpers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 .auth-footer {
   margin-top: 1.5rem;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  text-align: center;
   color: var(--text-muted);
 }
 
 .auth-link {
   color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -135,11 +169,274 @@ body {
   text-decoration: underline;
 }
 
-/* حاوية فرعية لروابط أسفل الفورم مثل Forgot Password */
-.form-helpers {
+/* --- ����� ���� ������ ������ --- */
+.app-container {
+  min-height: 100vh;
   display: flex;
-  justify-content: flex-end;
-  margin-top: -0.5rem;
-  margin-bottom: 1.25rem;
+  background-color: var(--bg-dark);
+}
+
+.sidebar {
+  width: 260px;
+  background-color: #111827;
+  color: var(--text-main);
+  padding: 2rem 1.5rem;
+}
+
+.sidebar h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+}
+
+.sidebar-menu li + li {
+  margin-top: 0.75rem;
+}
+
+.sidebar-item a {
+  display: block;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  color: #d1d5db;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-item a:hover,
+.sidebar-item a.active-link {
+  background-color: rgba(99, 102, 241, 0.15);
+  color: var(--text-main);
+}
+
+.main-content {
+  flex: 1;
+  padding: 2.5rem;
+}
+
+.project-card,
+.dashboard-column,
+.board-column {
+  background-color: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.project-card {
+  padding: 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.project-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  background-color: #dbeafe;
+  color: #1d4ed8;
+  font-size: 0.82rem;
+}
+
+.board-container,
+.dashboard-board {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.board-column,
+.dashboard-column {
+  flex: 1;
+  min-width: 260px;
+  padding: 1.5rem;
+  border-radius: 18px;
+  background-color: #f8fafc;
+}
+
+.board-column h4,
+.dashboard-column-title {
+  margin: 0 0 1rem;
+  color: #111827;
+}
+
+.task-item {
+  background-color: var(--card-bg);
+  padding: 1rem;
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+  border-left: 4px solid var(--primary-color);
+}
+
+.task-card {
+  padding: 1rem;
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #64748b;
+  background-color: #ffffff;
+}
+
+.task-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.task-project-badge {
+  display: inline-block;
+  font-size: 0.82rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+.task-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.task-action-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.task-action-button,
+.task-delete-button {
   font-size: 0.85rem;
+  border-radius: 10px;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.task-action-button {
+  background-color: #eef2ff;
+  color: #3730a3;
+  border-color: #c7d2fe;
+}
+
+.task-delete-button {
+  background-color: transparent;
+  color: var(--danger-color);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.dashboard-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.dashboard-overview-card {
+  min-height: 160px;
+  padding: 1.5rem;
+}
+
+.dashboard-overview-text {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.dashboard-overview-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(90px, 1fr));
+  gap: 0.9rem;
+}
+
+.dashboard-stat {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dashboard-stat strong {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+.dashboard-stat span {
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.dashboard-column-title {
+  color: #111827;
+  border-bottom: 3px solid #facc15;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-column--in-progress .dashboard-column-title {
+  border-color: #2563eb;
+}
+
+.dashboard-column--done .dashboard-column-title {
+  border-color: #16a34a;
+}
+
+.dashboard-form {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.dashboard-form-input,
+.dashboard-form-select {
+  flex: 1;
+  min-width: 200px;
+}
+
+.dashboard-form-submit {
+  padding: 0.95rem 1.25rem;
+  min-width: 160px;
+  border-radius: 12px;
+  border: none;
+  background-color: var(--primary-color);
+  color: #fff;
+  cursor: pointer;
+}
+
+.dashboard-form-submit:hover {
+  background-color: var(--primary-hover);
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+
+  .dashboard-board,
+  .board-container {
+    flex-direction: column;
+  }
+
+  .auth-container {
+    padding: 2rem;
+  }
 }
