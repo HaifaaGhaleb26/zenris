@@ -87,7 +87,7 @@ function App() {
           setTasks(!tskErr && tsk ? tsk.map(normalizeTask) : []);
         }
       } catch (err) {
-        console.error('❌ Error fetching Zenris data:', err);
+        console.error(' Error fetching Zenris data:', err);
         if (isMounted) {
           setProjects([]);
           setTasks([]);
@@ -102,7 +102,9 @@ function App() {
     return () => {
       isMounted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
+ 
 
   const handleAddTask = async (title, projectId) => {
     if (!session?.user) return;
