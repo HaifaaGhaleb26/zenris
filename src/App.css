@@ -1,8 +1,8 @@
 /* تعريف الألوان وثيم مشروع Zenris */
 :root {
   --primary-color: #1e1e2f;     /* Zenris Purple */
-  --sidebar-bg: #b4b4d2;        
-  --main-bg: #b4b4d2;           
+  --sidebar-bg: #818194;        
+  --main-bg: #292948;           
   --card-bg: #ffffff;           
   --text-light: #ffffff;
   --text-dark: #333333;
@@ -197,6 +197,77 @@
   font-weight: bold;
   margin-top: 10px;
   transition: 0.2s;
+}
+
+.auth-card {
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.auth-title {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: var(--primary-color);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-label {
+  font-size: 0.95rem;
+  color: #4b4b6b;
+}
+
+.auth-error,
+.auth-success,
+.auth-info {
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.auth-error {
+  background-color: #ffe6e6;
+  color: #a12d2d;
+}
+
+.auth-success {
+  background-color: #e8f9ed;
+  color: #176a3f;
+}
+
+.auth-info {
+  background-color: #eef4ff;
+  color: #2256a1;
+}
+
+.auth-footer-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.forgot-password-link,
+.auth-switch-link {
+  color: var(--primary-color);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.auth-switch-text {
+  margin-top: 18px;
+  text-align: center;
+  color: #5d5d79;
 }
 
 .login-button:hover {

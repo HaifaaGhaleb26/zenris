@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import ManageProjects from './pages/ManageProjects';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
+import ResetPassword from './pages/ResetPassword';
 import './App.css';
 
 function App() {
@@ -14,11 +15,14 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
 
-  // 1. مراقبة الجلسة
+  // 1. مراقبة الجلسة وتحديثها عند تسجيل الدخول / الخروج
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    async function loadSession() {
+      const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
-    });
+    }
+
+    loadSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
@@ -27,68 +31,117 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // 2. جلب المشاريع والمهام معاً إذا تم تسجيل الدخول
+  // 2. جلب المشاريع والمهام الخاصة بالمستخدم الحالي فقط
   useEffect(() => {
-    if (!session) {
-      setLoading(false);
-      return;
-    }
+    let isMounted = true;
 
     async function fetchData() {
+      if (!session?.user) {
+        setProjects([]);
+        setTasks([]);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setProjects([]);
+      setTasks([]);
+
       try {
-        setLoading(true);
-        
-        // جلب المشاريع
-        const { data: projs, error: projErr } = await supabase
-          .from('projects')
-          .select('*')
-          .order('created_at', { ascending: false });
-        
-        // جلب المهام
-        const { data: tsk, error: tskErr } = await supabase
-          .from('tasks')
-          .select('*');
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
 
-        if (!projErr && projs) setProjects(projs);
-        if (!tskErr && tsk) setTasks(tsk);
+        if (userError || !user) {
+          console.error('❌ Failed to get current user:', userError);
+          if (isMounted) setLoading(false);
+          return;
+        }
 
+        const userId = user.id;
+
+        const [
+          { data: projs, error: projErr },
+          { data: tsk, error: tskErr },
+        ] = await Promise.all([
+          supabase
+            .from('projects')
+            .select('*')
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false }),
+          supabase
+            .from('tasks')
+            .select('*')
+            .eq('user_id', userId),
+        ]);
+
+        if (isMounted) {
+          setProjects(!projErr && projs ? projs : []);
+          setTasks(!tskErr && tsk ? tsk : []);
+        }
       } catch (err) {
-        console.error("❌ Error fetching data:", err);
+        console.error('❌ Error fetching Zenris data:', err);
+        if (isMounted) {
+          setProjects([]);
+          setTasks([]);
+        }
       } finally {
-        setLoading(false); 
+        if (isMounted) setLoading(false);
       }
     }
 
     fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [session]);
 
   const handleAddTask = async (title, projectId) => {
+    if (!session?.user) return;
+
     const { data, error } = await supabase
       .from('tasks')
-      .insert([{ title, project_id: projectId, status: 'todo' }])
+      .insert([
+        {
+          title,
+          project_id: projectId,
+          status: 'todo',
+          user_id: session.user.id,
+        },
+      ])
       .select();
 
-    if (!error && data) {
+    if (!error && data?.length) {
       setTasks((prev) => [data[0], ...prev]);
     }
   };
 
   const handleUpdateTaskStatus = async (taskId, newStatus) => {
+    if (!session?.user) return;
+
     const { error } = await supabase
       .from('tasks')
       .update({ status: newStatus })
-      .eq('id', taskId);
+      .eq('id', taskId)
+      .eq('user_id', session.user.id);
 
     if (!error) {
-      setTasks((prev) => prev.map((task) => (task.id === taskId ? { ...task, status: newStatus } : task)));
+      setTasks((prev) =>
+        prev.map((task) => (task.id === taskId ? { ...task, status: newStatus } : task))
+      );
     }
   };
 
   const handleDeleteTask = async (taskId) => {
+    if (!session?.user) return;
+
     const { error } = await supabase
       .from('tasks')
       .delete()
-      .eq('id', taskId);
+      .eq('id', taskId)
+      .eq('user_id', session.user.id);
 
     if (!error) {
       setTasks((prev) => prev.filter((task) => task.id !== taskId));
@@ -96,14 +149,32 @@ function App() {
   };
 
   const handleAddProject = async (newProj) => {
-    const { data, error } = await supabase.from('projects').insert([newProj]).select();
-    if (!error && data) {
+    if (!session?.user) return;
+
+    const payload = {
+      ...newProj,
+      user_id: session.user.id,
+    };
+
+    const { data, error } = await supabase
+      .from('projects')
+      .insert([payload])
+      .select();
+
+    if (!error && data?.length) {
       setProjects((prev) => [data[0], ...prev]);
     }
   };
 
   const handleDeleteProject = async (id) => {
-    const { error } = await supabase.from('projects').delete().eq('id', id);
+    if (!session?.user) return;
+
+    const { error } = await supabase
+      .from('projects')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', session.user.id);
+
     if (!error) {
       setProjects((prev) => prev.filter((proj) => proj.id !== id));
       setTasks((prev) => prev.filter((task) => task.project_id !== id));
@@ -163,6 +234,7 @@ function App() {
 
             <Route path="/settings" element={session ? <Settings /> : <Navigate to="/login" replace />} />
             <Route path="/login" element={!session ? <Login /> : <Navigate to="/" replace />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="*" element={<Navigate to={session ? "/" : "/login"} replace />} />
           </Routes>
         </main>

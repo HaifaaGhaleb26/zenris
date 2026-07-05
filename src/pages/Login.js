@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
+  const [showResetRequest, setShowResetRequest] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetStatus, setResetStatus] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMsg(location.state.message);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const handleAuth = async (e) => {
     e.preventDefault();
     setErrorMsg('');
+    setSuccessMsg('');
     setLoading(true);
 
     try {
@@ -46,6 +59,41 @@ function Login() {
     }
   };
 
+  const handleResetRequest = async (e) => {
+    e.preventDefault();
+    setErrorMsg('');
+    setSuccessMsg('');
+    setResetStatus('');
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+        redirectTo: 'https://zenris.netlify.app/reset-password',
+      });
+      if (error) throw error;
+      setResetStatus('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني. تحقق من صندوق الوارد.');
+    } catch (error) {
+      setErrorMsg(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleShowResetRequest = () => {
+    setShowResetRequest(true);
+    setResetEmail(email);
+    setErrorMsg('');
+    setSuccessMsg('');
+    setResetStatus('');
+  };
+
+  const handleBackToLogin = () => {
+    setShowResetRequest(false);
+    setErrorMsg('');
+    setSuccessMsg('');
+    setResetStatus('');
+  };
+
   return (
     <div className="login-container auth-page">
       <div className="project-card login-card auth-card">
@@ -53,57 +101,102 @@ function Login() {
           {isSignUp ? 'Create Zenris Account' : 'Login to Zenris'}
         </h2>
 
+        {successMsg && <div className="auth-success">{successMsg}</div>}
+        {resetStatus && <div className="auth-success">{resetStatus}</div>}
         {errorMsg && <div className="auth-error">{errorMsg}</div>}
 
-        <form className="auth-form" onSubmit={handleAuth}>
-          {isSignUp && (
+        {showResetRequest ? (
+          <form className="auth-form" onSubmit={handleResetRequest}>
             <div className="auth-form-group">
-              <label className="auth-label">Full Name</label>
+              <label className="auth-label">Email Address</label>
               <input
-                type="text"
+                type="email"
                 className="login-input"
-                placeholder="Your Name"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                required={isSignUp}
+                placeholder="you@example.com"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                required
               />
             </div>
-          )}
 
-          <div className="auth-form-group">
-            <label className="auth-label">Email Address</label>
-            <input
-              type="email"
-              className="login-input"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <button type="submit" className="login-button auth-submit-button" disabled={loading}>
+              {loading ? 'Sending reset link...' : 'Send Reset Link'}
+            </button>
+          </form>
+        ) : (
+          <form className="auth-form" onSubmit={handleAuth}>
+            {isSignUp && (
+              <div className="auth-form-group">
+                <label className="auth-label">Full Name</label>
+                <input
+                  type="text"
+                  className="login-input"
+                  placeholder="Your Name"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  required={isSignUp}
+                />
+              </div>
+            )}
+
+            <div className="auth-form-group">
+              <label className="auth-label">Email Address</label>
+              <input
+                type="email"
+                className="login-input"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="auth-form-group">
+              <label className="auth-label">Password</label>
+              <input
+                type="password"
+                className="login-input"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit" className="login-button auth-submit-button" disabled={loading}>
+              {loading ? 'Please wait...' : isSignUp ? 'Sign Up' : 'Login'}
+            </button>
+          </form>
+        )}
+
+        {!showResetRequest && !isSignUp && (
+          <div className="auth-footer-row">
+            <span className="forgot-password-link" onClick={handleShowResetRequest}>
+              Forgot Password?
+            </span>
           </div>
-
-          <div className="auth-form-group">
-            <label className="auth-label">Password</label>
-            <input
-              type="password"
-              className="login-input"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button type="submit" className="login-button auth-submit-button" disabled={loading}>
-            {loading ? 'Please wait...' : isSignUp ? 'Sign Up' : 'Login'}
-          </button>
-        </form>
+        )}
 
         <p className="auth-switch-text">
-          {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-          <span className="auth-switch-link" onClick={() => { setIsSignUp(!isSignUp); setErrorMsg(''); }}>
-            {isSignUp ? 'Login here' : 'Register here'}
-          </span>
+          {showResetRequest ? (
+            <span className="auth-switch-link" onClick={handleBackToLogin}>
+              Back to login
+            </span>
+          ) : isSignUp ? (
+            <>
+              Already have an account?{' '}
+              <span className="auth-switch-link" onClick={() => { setIsSignUp(false); setErrorMsg(''); setSuccessMsg(''); }}>
+                Login here
+              </span>
+            </>
+          ) : (
+            <>
+              Don't have an account?{' '}
+              <span className="auth-switch-link" onClick={() => { setIsSignUp(true); setErrorMsg(''); setSuccessMsg(''); }}>
+                Register here
+              </span>
+            </>
+          )}
         </p>
       </div>
     </div>
