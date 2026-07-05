@@ -16,6 +16,7 @@
   --shadow: 0 24px 60px rgba(10, 15, 40, 0.42);
 }
 
+/* --- Base reset --- */
 * {
   box-sizing: border-box;
 }
@@ -49,7 +50,7 @@ button {
   outline: none;
 }
 
-/* --- Authentication pages --- */
+/* --- Auth pages --- */
 .auth-page {
   min-height: 100vh;
   display: flex;
@@ -137,7 +138,8 @@ textarea {
 button.login-button,
 button.auth-submit-button,
 button.dashboard-form-submit,
-button.project-delete-button {
+button.project-delete-button,
+button.settings-logout-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -179,6 +181,16 @@ button.project-delete-button {
 
 button.project-delete-button:hover {
   background-color: rgba(239, 68, 68, 0.12);
+}
+
+button.settings-logout-button {
+  background-color: var(--danger-color);
+  color: #fff;
+}
+
+button.settings-logout-button:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
 }
 
 .auth-success,
@@ -293,6 +305,7 @@ button.project-delete-button:hover {
   color: var(--text-main);
 }
 
+/* --- Dashboard and cards --- */
 .dashboard-overview,
 .board-container,
 .project-list {
@@ -308,13 +321,15 @@ button.project-delete-button:hover {
 .dashboard-overview-card,
 .dashboard-column,
 .project-card,
-.project-list-item {
+.project-list-item,
+.task-board {
   background-color: var(--card-bg);
 }
 
 .dashboard-overview-card,
 .dashboard-column,
-.project-card {
+.project-card,
+.task-board {
   border-radius: 22px;
   padding: 1.75rem;
 }
@@ -352,7 +367,8 @@ button.project-delete-button:hover {
 }
 
 .dashboard-column-title,
-.project-card h3 {
+.project-card h3,
+.task-board h3 {
   margin: 0 0 1rem;
   font-size: 1.1rem;
   color: var(--text-main);
@@ -440,13 +456,10 @@ button.project-delete-button:hover {
   background-color: rgba(239, 68, 68, 0.12);
 }
 
-.dashboard-add-task-card {
-  padding: 1.75rem;
-  border-radius: 22px;
-}
-
+.dashboard-add-task-card,
 .project-list-section {
   padding: 1.75rem;
+  border-radius: 22px;
 }
 
 .project-list {
@@ -489,6 +502,66 @@ button.project-delete-button:hover {
 }
 
 .text-muted {
+  color: var(--text-muted);
+}
+
+.task-board {
+  padding: 1.75rem;
+}
+
+.task-board-dropzone {
+  min-height: 220px;
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.5rem;
+  border-radius: 18px;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.task-item {
+  background-color: #1b2037;
+  border-radius: 16px;
+  padding: 1rem;
+  color: var(--text-main);
+  box-shadow: 0 18px 32px rgba(7, 12, 30, 0.2);
+}
+
+.settings-profile {
+  display: grid;
+  gap: 1rem;
+  color: var(--text-soft);
+}
+
+.settings-email {
+  color: var(--text-main);
+}
+
+.loading-screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, rgba(109, 119, 255, 0.16), transparent 35%),
+    linear-gradient(180deg, #14182d 0%, #111427 100%);
+}
+
+.loading-card {
+  background-color: var(--card-bg);
+  border-radius: 24px;
+  padding: 2rem 2.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: var(--shadow);
+  text-align: center;
+  color: var(--text-main);
+}
+
+.loading-card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.85rem;
+}
+
+.loading-card p {
+  margin: 0;
   color: var(--text-muted);
 }
 
