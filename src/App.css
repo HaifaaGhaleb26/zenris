@@ -57,29 +57,29 @@ button {
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  background: radial-gradient(circle at top, rgba(109, 119, 255, 0.16), transparent 40%),
-    linear-gradient(180deg, #161b33 0%, #13172f 100%);
+  background: radial-gradient(circle at center, rgba(109, 119, 255, 0.22), transparent 35%),
+    linear-gradient(180deg, #0f1b4a 0%, #131b3d 100%);
   width: 100%;
 }
 
 .login-container {
   width: 100%;
-  max-width: 480px;
+  max-width: 420px;
   margin: 0 auto;
 }
 
 .auth-card,
 .login-card,
 .project-card {
-  background-color: var(--card-bg);
-  border-radius: 24px;
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  box-shadow: var(--shadow);
+  background-color: #1f2c6c;
+  border-radius: 22px;
+  border: 1px solid rgba(109, 119, 255, 0.28);
+  box-shadow: 0 24px 60px rgba(7, 12, 40, 0.48);
   margin: 0 auto;
 }
 
 .auth-card {
-  padding: 2.5rem;
+  padding: 2rem;
 }
 
 .auth-title {
